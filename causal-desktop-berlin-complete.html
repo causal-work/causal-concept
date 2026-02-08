@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Causal - Berlin Desktop</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f7fa; color: #1a1a1a; height: 100vh; overflow: hidden;
+        }
+        .app-container { display: flex; flex-direction: column; height: 100vh; }
+        
+        /* Full Width Header */
+        .app-header {
+            background: linear-gradient(135deg, #004343 0%, #002828 100%);
+            color: white; padding: 20px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .logo { font-weight: 700; font-size: 20px; letter-spacing: -0.5px; }
+        .header-icons { display: flex; gap: 12px; }
+        .help-icon, .profile-icon {
+            width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+        .header-title { font-size: 32px; font-weight: 700; margin-bottom: 4px; }
+        .header-subtitle { font-size: 15px; opacity: 0.9; }
+        
+        /* Content Layout */
+        .content-wrapper { display: flex; flex: 1; overflow: hidden; }
+        .sidebar {
+            width: 220px; background: white; border-right: 1px solid #e5e7eb;
+            display: flex; flex-direction: column;
+        }
+        .nav-section { padding: 20px 16px; flex: 1; overflow-y: auto; }
+        .nav-group { margin-bottom: 24px; }
+        .nav-group-title {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            color: #6b7280; margin-bottom: 8px; padding: 0 8px;
+        }
+        .nav-item {
+            padding: 10px 12px; border-radius: 6px; margin-bottom: 2px; cursor: pointer;
+            font-size: 14px; display: flex; align-items: center; gap: 10px; color: #374151;
+        }
+        .nav-item:hover { background: #f3f4f6; }
+        .nav-item.active { background: #dbeafe; color: #1e40af; font-weight: 600; }
+        
+        .content-area { flex: 1; overflow-y: auto; background: white; }
+        .content-container { max-width: 1200px; margin: 0 auto; padding: 32px; }
+        .content-view { display: none; }
+        .content-view.active { display: block; }
+        
+        /* Workshop Iframe */
+        .workshop-iframe-container { width: 100%; height: calc(100vh - 140px); }
+        .workshop-iframe { width: 100%; height: 100%; border: none; }
+        
+        /* Info note */
+        .info-note {
+            background: #f0f9ff; border: 2px solid #3b82f6; border-radius: 12px;
+            padding: 20px; margin: 32px 0; font-size: 15px; line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="app-header">
+            <div class="header-top">
+                <div class="logo">Causal</div>
+                <div class="header-icons">
+                    <div class="help-icon" onclick="window.open('https://causal.work', '_blank')">ℹ️</div>
+                    <div class="profile-icon" onclick="alert('Profile & settings')">👤</div>
+                </div>
+            </div>
+            <div class="header-title">Berlin</div>
+            <div class="header-subtitle">Coordination infrastructure for systemic change</div>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="sidebar">
+                <div class="nav-section">
+                    <div class="nav-group">
+                        <div class="nav-group-title">Coordination</div>
+                        <div class="nav-item" onclick="alert('Push view - see mobile mockup for full content')">
+                            <span>📢</span><span>Push</span>
+                        </div>
+                        <div class="nav-item" onclick="alert('Watch view - see mobile mockup for full content')">
+                            <span>👁️</span><span>Watch</span>
+                        </div>
+                        <div class="nav-item" onclick="alert('Purse view - see mobile mockup for full content')">
+                            <span>💰</span><span>Purse</span>
+                        </div>
+                    </div>
+                    <div class="nav-group">
+                        <div class="nav-group-title">Strategy</div>
+                        <div class="nav-item active" onclick="showView('workshop-home')">
+                            <span>🔧</span><span>Workshop</span>
+                        </div>
+                        <div class="nav-item" onclick="showView('workshop-housing')">
+                            <span>🏠</span><span>Housing Project</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div id="workshop-home-view" class="content-view active">
+                    <div class="workshop-iframe-container">
+                        <iframe src="workshop-homepage.html" class="workshop-iframe"></iframe>
+                    </div>
+                </div>
+
+                <div id="workshop-housing-view" class="content-view">
+                    <div class="workshop-iframe-container">
+                        <iframe src="berlin-housing-detail.html" class="workshop-iframe"></iframe>
+                    </div>
+                </div>
+                
+                <div id="info-view" class="content-view">
+                    <div class="content-container">
+                        <div class="info-note">
+                            <strong>Desktop Mockup Note:</strong> This desktop version demonstrates the layout with full-width header, sidebar navigation, and embedded Workshop pages. Push, Watch, and Purse views contain the same content as the mobile mockup - see <strong>causal-mobile-berlin.html</strong> for complete feature demonstrations across all sections.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showView(viewName) {
+            document.querySelectorAll('.content-view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            
+            document.getElementById(viewName + '-view').classList.add('active');
+            event.target.closest('.nav-item').classList.add('active');
+        }
+    </script>
+</body>
+</html>
