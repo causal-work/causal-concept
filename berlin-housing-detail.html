@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop - Berlin Green New Deal Housing Ordinance</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            color: #1a1a1a;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2a52be 0%, #1a3a8f 100%);
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .logo {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .workspace-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 280px 1fr 360px;
+            height: calc(100vh - 72px);
+        }
+
+        .sidebar {
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .sidebar-heading {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #6b7280;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-item {
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #374151;
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-item:hover {
+            background: #f3f4f6;
+        }
+
+        .sidebar-item.active {
+            background: #dbeafe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+
+        .main-content {
+            overflow-y: auto;
+            padding: 32px;
+        }
+
+        .project-header {
+            margin-bottom: 32px;
+        }
+
+        .project-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 24px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .status-badge {
+            padding: 6px 14px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .turnaround-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .turnaround-tag {
+            padding: 6px 12px;
+            color: white;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .section-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .cascade-item {
+            border-left: 3px solid #e5e7eb;
+            padding-left: 16px;
+            margin-bottom: 20px;
+        }
+
+        .cascade-turnaround {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+        }
+
+        .cascade-mechanism {
+            font-size: 14px;
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .right-panel {
+            background: white;
+            border-left: 1px solid #e5e7eb;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .participant {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .participant:hover {
+            background: #f9fafb;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .participant-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .participant-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+        }
+
+        .participant-org {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            flex-shrink: 0;
+        }
+
+        .timeline-item {
+            padding-left: 24px;
+            position: relative;
+            padding-bottom: 24px;
+            border-left: 2px solid #e5e7eb;
+        }
+
+        .timeline-item:last-child {
+            border-left-color: transparent;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -5px;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+
+        .timeline-content {
+            font-size: 14px;
+            color: #374151;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <div class="logo">Causal Workshop</div>
+            <div class="workspace-title">Berlin Green New Deal Housing Ordinance</div>
+        </div>
+        <div class="header-right">
+            <button class="header-btn" style="background: #10b981; border: none;">Publish to Push</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-heading">Navigation</div>
+            <div class="sidebar-item active">Overview</div>
+            <div class="sidebar-item">Systems Analysis</div>
+            <div class="sidebar-item">Coordination Timeline</div>
+            <div class="sidebar-item">Resources</div>
+            <div class="sidebar-item">Discussion</div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="project-header">
+                <div class="project-title">Berlin Green New Deal Housing Ordinance</div>
+                <div class="project-meta">
+                    <div><strong>Initiated:</strong> November 2025</div>
+                    <div><strong>Target:</strong> City Council Vote Feb 15, 2026</div>
+                    <div><strong>Collaborators:</strong> 18 across 4 sectors</div>
+                </div>
+                <div class="status-badge">Active Campaign</div>
+                <div class="turnaround-tags">
+                    <span class="turnaround-tag" style="background: #f59e0b;">INEQUALITY ●●●●●</span>
+                    <span class="turnaround-tag" style="background: #ef4444;">ENERGY ●●●●○</span>
+                    <span class="turnaround-tag" style="background: #f59e0b;">POVERTY ●●●○○</span>
+                    <span class="turnaround-tag" style="background: #3b82f6;">GENDER ●●○○○</span>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="section-title">Initiative Summary</div>
+                <p style="color: #374151; line-height: 1.6; margin-bottom: 16px;">
+                    Coalition targeting affordable housing mandate with EPC-B energy efficiency standards. Workshop analysis identified this as a high-cascade opportunity—addressing inequality through housing access while simultaneously achieving energy transition and poverty reduction through lower utility costs.
+                </p>
+                <p style="color: #374151; line-height: 1.6;">
+                    Cross-sector collaboration includes climate organizations, tenant unions, energy cooperatives, and PIK Potsdam systems scientists. Coordinated campaign launches January 28 with synchronized testimony at planning committee hearings.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <div class="section-title">Cross-Turnaround Cascade Analysis</div>
+                
+                <div class="cascade-item" style="border-left-color: #f59e0b;">
+                    <div class="cascade-turnaround">INEQUALITY (Primary Target) ●●●●●</div>
+                    <div class="cascade-mechanism">
+                        Affordable housing mandate creates 3,000 units at 30% below market rate. Targets households earning &lt;60% area median income. Addresses core inequality driver: housing cost burden.
+                    </div>
+                </div>
+
+                <div class="cascade-item" style="border-left-color: #ef4444;">
+                    <div class="cascade-turnaround">ENERGY (Cascade Effect) ●●●●○</div>
+                    <div class="cascade-mechanism">
+                        Ordinance mandates EPC-B energy standards for new builds. Achieves 40% reduction in heating emissions per household compared to standard construction. Housing policy becomes energy transition intervention.
+                    </div>
+                </div>
+
+                <div class="cascade-item" style="border-left-color: #f59e0b;">
+                    <div class="cascade-turnaround">POVERTY (Cascade Effect) ●●●○○</div>
+                    <div class="cascade-mechanism">
+                        Lower energy costs create €80-120/month savings per household. Equivalent to 4% income increase for low-income families. Affordable housing becomes poverty reduction mechanism.
+                    </div>
+                </div>
+
+                <div class="cascade-item" style="border-left-color: #3b82f6;">
+                    <div class="cascade-turnaround">GENDER (Cascade Effect) ●●○○○</div>
+                    <div class="cascade-mechanism">
+                        Women bear disproportionate "energy poverty" burden—managing household budgets, heating decisions, and utility costs. Reduced heating costs = reduced household financial stress. Housing policy becomes gender empowerment intervention.
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="section-title">Coordination Timeline</div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">November 12, 2025</div>
+                    <div class="timeline-content">Workshop coalition formation. 18 organizations commit to coordinated strategy.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">December 8, 2025</div>
+                    <div class="timeline-content">PIK Potsdam completes cascade analysis showing 4-turnaround impact. Energy cooperative validates EPC-B cost projections.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">January 15, 2026</div>
+                    <div class="timeline-content">Campaign materials finalized. Coordination intelligence published to Push for member mobilization.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot" style="background: #f59e0b;"></div>
+                    <div class="timeline-date">January 28, 2026</div>
+                    <div class="timeline-content"><strong>Coordinated Action:</strong> 1,847 coordinated testimonies submitted within 5-day planning committee window.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot" style="background: #9ca3af;"></div>
+                    <div class="timeline-date">February 15, 2026</div>
+                    <div class="timeline-content"><strong>Target Decision:</strong> Berlin City Council vote on ordinance.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel - Collaborators -->
+        <div class="right-panel">
+            <div class="sidebar-heading">Collaborators (18)</div>
+            
+            <div style="margin-bottom: 24px;">
+                <div style="font-size: 12px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px;">Climate Organizations (4)</div>
+                
+                <div class="participant">
+                    <div class="avatar" style="background: #10b981;">CA</div>
+                    <div class="participant-info">
+                        <div class="participant-name">Climate Alliance Berlin</div>
+                        <div class="participant-org">Coalition lead</div>
+                    </div>
+                    <div class="status-dot"></div>
+                </div>
+
+                <div class="participant">
+                    <div class="avatar" style="background: #059669;">FFF</div>
+                    <div class="participant-info">
+                        <div class="participant-name">Fridays for Future Berlin</div>
+                        <div class="participant-org">Youth mobilization</div>
+                    </div>
+                    <div class="status-dot"></div>
+                </div>
+
+                <div class="participant">
+                    <div class="avatar" style="background: #10b981;">GP</div>
+                    <div class="participant-info">
+                        <div class="participant-name">Greenpeace Berlin</div>
+                        <div class="participant-org">Media coordination</div>
+                    </div>
+                </div>
+
+                <div class="participant">
+                    <div class="avatar" style="background: #059669;">ER</div>
+                    <div class="participant-info">
+                        <div class="participant-name">Extinction Rebellion</div>
+                        <div class="participant-org">Direct action</div>
+                    </div>
+                    <div class="status-dot"></div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <div style="font-size: 12px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px;">Housing Organizations (6)</div>
+                
+                <div class="participant">
+                    <div class="avatar" style="background: #f59e0b;">MV</div>
+                    <div class="participant-info">
+                        <div class="participant-name">Mieterschutzverein</div>
+                        <div class="participant-org">Tenant advocacy</div>
+                    </div>
+                    <div class="status-dot"></div>
+                </div>
+
+                <div class="participant">
+                    <div class="avatar" style="background: #d97706;">DW</div>
+                    <div class="participant-info">
+                        <div class="participant-name">Deutsche Wohnen & Co</div>
+                        <div class="participant-org">Socialization campaign</div>
+                    </div>
+                </div>
+
+                <div class="participant">
+                    <div class="avatar" style="background: #f59e0b;">BM</div>
+                    <div class="participant-info">
+                        <div class="participant-name">Berlin Mietergemeinschaft</div>
+                        <div class="participant-org">Legal support</div>
+                    </div>
+                    <div class="status-dot"></div>
+                </div>
+
+                <div class="participant">
+                    <div class="avatar" style="background: #d97706;">KA</div>
+                    <div class="participant-info">
+                        <div class="participant-name">Kotti & Co</div>
+                        <div class="participant-org">Community organizing</div>
+                    </div>
+                </div>
+
+                <div class="participant">
+                    <div class="avatar" style="background: #f59e0b;">RM</div>
+                    <div class="participant-info">
+                        <div class="participant-name">Recht auf Stadt</div>
+                        <div class="participant-org">Urban justice network</div>
+                    </div>
+                    <div class="status-dot"></div>
+                </div>
+
+                <div class="participant">
+                    <div class="avatar" style="background: #d97706;">BS</div>
+                    <div class="participant-info">
+                        <div class="participant-name">Bizim Solidarity</div>
+                        <div class="participant-org">Migrant communities</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <div style="font-size: 12px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px;">Energy Organizations (5)</div>
+                
+                <div class="participant">
+                    <div class="avatar" style="background: #ef4444;">EC</div>
+                    <div class="participant-info">
+                        <div class="participant-name">Berlin Energy Cooperative</div>
+                        <div class="participant-org">EPC-B technical lead</div>
+                    </div>
+                    <div class="status-dot"></div>
+                </div>
+
+                <div class="participant">
+                    <div class="avatar" style="background: #dc2626;">BWE</div>
+                    <div class="participant-info">
+                        <div class="participant-name">Berliner Wassertisch</div>
+                        <div class="participant-org">Energy democracy</div>
+                    </div>
+                </div>
+
+                <div class="participant">
+                    <div class="avatar" style="background: #ef4444;">BEE</div>
+                    <div class="participant-info">
+                        <div class="participant-name">Berlin Energy Agency</div>
+                        <div class="participant-org">Cost projections</div>
+                    </div>
+                    <div class="status-dot"></div>
+                </div>
+
+                <div class="participant">
+                    <div class="avatar" style="background: #dc2626;">GT</div>
+                    <div class="participant-info">
+                        <div class="participant-name">GermanZero Berlin</div>
+                        <div class="participant-org">Policy drafting</div>
+                    </div>
+                </div>
+
+                <div class="participant">
+                    <div class="avatar" style="background: #ef4444;">BBU</div>
+                    <div class="participant-info">
+                        <div class="participant-name">BUND Berlin</div>
+                        <div class="participant-org">Building efficiency</div>
+                    </div>
+                    <div class="status-dot"></div>
+                </div>
+            </div>
+
+            <div>
+                <div style="font-size: 12px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px;">Research Partners (3)</div>
+                
+                <div class="participant">
+                    <div class="avatar" style="background: #8b5cf6;">PIK</div>
+                    <div class="participant-info">
+                        <div class="participant-name">PIK Potsdam</div>
+                        <div class="participant-org">Cascade analysis</div>
+                    </div>
+                    <div class="status-dot"></div>
+                </div>
+
+                <div class="participant">
+                    <div class="avatar" style="background: #7c3aed;">TU</div>
+                    <div class="participant-info">
+                        <div class="participant-name">TU Berlin</div>
+                        <div class="participant-org">Energy modeling</div>
+                    </div>
+                </div>
+
+                <div class="participant">
+                    <div class="avatar" style="background: #8b5cf6;">DIW</div>
+                    <div class="participant-info">
+                        <div class="participant-name">DIW Berlin</div>
+                        <div class="participant-org">Economic impact</div>
+                    </div>
+                    <div class="status-dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
